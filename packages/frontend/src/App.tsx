@@ -1,37 +1,90 @@
-import { Card, CardContent } from "@/components/ui/card";
-import { APITester } from "./APITester";
-import "./index.css";
+import { useState } from "react";
+import type { Post } from 'shared';
+import { PostList } from "./components/PostList";
+import { PostForm } from "./components/PostForm";
 
-import logo from "./logo.svg";
-import reactLogo from "./react.svg";
+type View = 'list' | 'create' | 'edit' | 'view';
 
 export function App() {
-  return (
-    <div className="container mx-auto p-8 text-center relative z-10">
-      <div className="flex justify-center items-center gap-8 mb-8">
-        <img
-          src={logo}
-          alt="Bun Logo"
-          className="h-36 p-6 transition-all duration-300 hover:drop-shadow-[0_0_2em_#646cffaa] scale-120"
-        />
-        <img
-          src={reactLogo}
-          alt="React Logo"
-          className="h-36 p-6 transition-all duration-300 hover:drop-shadow-[0_0_2em_#61dafbaa] [animation:spin_20s_linear_infinite]"
-        />
-      </div>
+  const [currentView, setCurrentView] = useState<View>('list');
+  const [selectedPost, setSelectedPost] = useState<Post | null>(null);
 
-      <Card className="bg-card/50 backdrop-blur-sm border-muted">
-        <CardContent className="pt-6">
-          <h1 className="text-5xl font-bold my-4 leading-tight">Bun + React</h1>
-          <p>
-            Edit{" "}
-            <code className="relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm">src/App.tsx</code> and
-            save to test HMR
-          </p>
-          <APITester />
-        </CardContent>
-      </Card>
+  const handleCreatePost = () => {
+    setSelectedPost(null);
+    setCurrentView('create');
+  };
+
+  const handleEditPost = (post: Post) => {
+    setSelectedPost(post);
+    setCurrentView('edit');
+  };
+
+  const handleViewPost = (post: Post) => {
+    setSelectedPost(post);
+    setCurrentView('view');
+  };
+
+  const handleSavePost = (post: Post) => {
+    setCurrentView('list');
+    setSelectedPost(null);
+  };
+
+  const handleCancel = () => {
+    setCurrentView('list');
+    setSelectedPost(null);
+  };
+
+  return (
+    <div className="min-h-screen bg-background">
+      <div className="container mx-auto py-8 px-4 max-w-6xl">
+        {currentView === 'list' && (
+          <PostList
+            onCreatePost={handleCreatePost}
+            onEditPost={handleEditPost}
+            onViewPost={handleViewPost}
+          />
+        )}
+
+        {(currentView === 'create' || currentView === 'edit') && (
+          <PostForm
+            post={currentView === 'edit' ? selectedPost : null}
+            onSave={handleSavePost}
+            onCancel={handleCancel}
+          />
+        )}
+
+        {currentView === 'view' && selectedPost && (
+          <div className="space-y-6">
+            <div className="flex items-center gap-4">
+              <button
+                onClick={handleCancel}
+                className="inline-flex items-center gap-2 px-3 py-2 text-sm bg-secondary text-secondary-foreground rounded-md hover:bg-secondary/80"
+              >
+                ← Back to Posts
+              </button>
+              <button
+                onClick={() => handleEditPost(selectedPost)}
+                className="inline-flex items-center gap-2 px-3 py-2 text-sm bg-primary text-primary-foreground rounded-md hover:bg-primary/90"
+              >
+                Edit Post
+              </button>
+            </div>
+
+            <article className="prose prose-slate max-w-none">
+              <h1 className="text-4xl font-bold mb-4">{selectedPost.title}</h1>
+              <div className="text-muted-foreground text-sm mb-6">
+                Published on {new Date(selectedPost.createdAt).toLocaleDateString()} 
+                {selectedPost.updatedAt !== selectedPost.createdAt && (
+                  <span> · Updated {new Date(selectedPost.updatedAt).toLocaleDateString()}</span>
+                )}
+              </div>
+              <div className="whitespace-pre-wrap text-foreground leading-relaxed">
+                {selectedPost.content}
+              </div>
+            </article>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
