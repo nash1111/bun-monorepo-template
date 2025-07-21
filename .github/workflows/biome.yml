@@ -8,7 +8,7 @@ on:
 
 jobs:
   biome-check:
-    name: Code Quality Check
+    name: Biome Quality Check
     runs-on: ubuntu-latest
     
     steps:
@@ -49,5 +49,5 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: '❌ **Biome Code Quality Check Failed**\n\nPlease run the following commands to fix the issues:\n\n```bash\nbun run format\nbun run lint:fix\nbun run check:fix\n```\n\nThen commit and push the changes.'
+              body: '❌ **Biome Code Quality Check Failed**\\n\\nPlease run the following commands to fix the issues:\\n\\n```bash\\nbun run format\\nbun run lint:fix\\nbun run check:fix\\n```\\n\\nThen commit and push the changes.'
             })

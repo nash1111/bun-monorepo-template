@@ -1,0 +1,54 @@
+{
+  "$schema": "https://unpkg.com/knip@latest/schema.json",
+  "workspaces": {
+    "packages/frontend": {
+      "entry": [
+        "src/frontend.tsx",
+        "src/index.html"
+      ],
+      "project": ["src/**/*.{ts,tsx,js,jsx,html,css}"],
+      "ignore": ["dist/**", "build/**", "src/components/ui/**"]
+    },
+    "packages/backend": {
+      "entry": ["src/index.ts"],
+      "project": ["src/**/*.{ts,tsx,js,jsx}"],
+      "ignore": ["dist/**", "build/**"]
+    },
+    "packages/shared": {
+      "entry": ["src/index.ts"],
+      "project": ["src/**/*.{ts,tsx,js,jsx}"],
+      "ignore": ["dist/**", "build/**"]
+    }
+  },
+  "ignore": [
+    "**/*.test.{ts,tsx,js,jsx}",
+    "**/*.spec.{ts,tsx,js,jsx}",
+    "**/test/**",
+    "**/tests/**",
+    "**/__tests__/**",
+    "**/dist/**",
+    "**/build/**",
+    "**/node_modules/**",
+    "**/.next/**",
+    "**/.vercel/**"
+  ],
+  "ignoreDependencies": [
+    "@radix-ui/react-select",
+    "tailwindcss",
+    "tailwindcss-animate"
+  ],
+  "rules": {
+    "files": "error",
+    "dependencies": "error",
+    "devDependencies": "error",
+    "optionalPeerDependencies": "off",
+    "unlisted": "error",
+    "exports": "error",
+    "nsExports": "error",
+    "classMembers": "error",
+    "enumMembers": "error",
+    "types": "error",
+    "nsTypes": "error",
+    "duplicates": "error"
+  }
+}
