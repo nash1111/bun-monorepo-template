@@ -2,10 +2,7 @@
   "$schema": "https://unpkg.com/knip@latest/schema.json",
   "workspaces": {
     "packages/frontend": {
-      "entry": [
-        "src/frontend.tsx",
-        "src/index.html"
-      ],
+      "entry": ["src/frontend.tsx", "src/index.html"],
       "project": ["src/**/*.{ts,tsx,js,jsx,html,css}"],
       "ignore": ["dist/**", "build/**", "src/components/ui/**"]
     },
@@ -32,11 +29,7 @@
     "**/.next/**",
     "**/.vercel/**"
   ],
-  "ignoreDependencies": [
-    "@radix-ui/react-select",
-    "tailwindcss",
-    "tailwindcss-animate"
-  ],
+  "ignoreDependencies": ["@radix-ui/react-select", "tailwindcss", "tailwindcss-animate"],
   "rules": {
     "files": "error",
     "dependencies": "error",
