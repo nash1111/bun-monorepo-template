@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react'
+import { Edit, Eye, Plus, Trash2 } from 'lucide-react'
+import { useCallback, useEffect, useState } from 'react'
 import type { Post } from 'shared'
-import { blogApi } from '@/lib/api'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Plus, Edit, Trash2, Eye } from 'lucide-react'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { blogApi } from '@/lib/api'
 
 interface PostListProps {
   onCreatePost: () => void
@@ -16,7 +16,7 @@ export function PostList({ onCreatePost, onEditPost, onViewPost }: PostListProps
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
-  const loadPosts = async () => {
+  const loadPosts = useCallback(async () => {
     try {
       setLoading(true)
       setError(null)
@@ -27,7 +27,7 @@ export function PostList({ onCreatePost, onEditPost, onViewPost }: PostListProps
     } finally {
       setLoading(false)
     }
-  }
+  }, [])
 
   const handleDelete = async (postId: string) => {
     if (!confirm('Are you sure you want to delete this post?')) {
@@ -36,7 +36,7 @@ export function PostList({ onCreatePost, onEditPost, onViewPost }: PostListProps
 
     try {
       await blogApi.deletePost(postId)
-      setPosts(posts.filter(post => post.id !== postId))
+      setPosts(posts.filter((post) => post.id !== postId))
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to delete post')
     }
@@ -44,7 +44,7 @@ export function PostList({ onCreatePost, onEditPost, onViewPost }: PostListProps
 
   useEffect(() => {
     loadPosts()
-  }, [])
+  }, [loadPosts])
 
   if (loading) {
     return (
@@ -88,36 +88,32 @@ export function PostList({ onCreatePost, onEditPost, onViewPost }: PostListProps
             <Card key={post.id} className="flex flex-col">
               <CardHeader>
                 <CardTitle className="line-clamp-2">{post.title}</CardTitle>
-                <CardDescription>
-                  {new Date(post.createdAt).toLocaleDateString()}
-                </CardDescription>
+                <CardDescription>{new Date(post.createdAt).toLocaleDateString()}</CardDescription>
               </CardHeader>
               <CardContent className="flex-1 flex flex-col">
-                <p className="text-muted-foreground line-clamp-3 flex-1 mb-4">
-                  {post.content}
-                </p>
+                <p className="text-muted-foreground line-clamp-3 flex-1 mb-4">{post.content}</p>
                 <div className="flex items-center gap-2">
-                  <Button 
-                    onClick={() => onViewPost(post)} 
-                    variant="outline" 
+                  <Button
+                    onClick={() => onViewPost(post)}
+                    variant="outline"
                     size="sm"
                     className="flex items-center gap-1"
                   >
                     <Eye className="w-3 h-3" />
                     View
                   </Button>
-                  <Button 
-                    onClick={() => onEditPost(post)} 
-                    variant="outline" 
+                  <Button
+                    onClick={() => onEditPost(post)}
+                    variant="outline"
                     size="sm"
                     className="flex items-center gap-1"
                   >
                     <Edit className="w-3 h-3" />
                     Edit
                   </Button>
-                  <Button 
-                    onClick={() => handleDelete(post.id)} 
-                    variant="outline" 
+                  <Button
+                    onClick={() => handleDelete(post.id)}
+                    variant="outline"
                     size="sm"
                     className="flex items-center gap-1 text-destructive hover:text-destructive"
                   >

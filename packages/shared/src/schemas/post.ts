@@ -8,10 +8,10 @@ export const PostSchema = z.object({
   updatedAt: z.string().datetime(),
 })
 
-export const CreatePostSchema = PostSchema.omit({ 
-  id: true, 
-  createdAt: true, 
-  updatedAt: true 
+export const CreatePostSchema = PostSchema.omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
 })
 
 export const UpdatePostSchema = CreatePostSchema.partial()
