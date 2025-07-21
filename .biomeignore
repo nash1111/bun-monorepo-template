@@ -1,0 +1,35 @@
+# Dependencies
+node_modules
+**/node_modules
+
+# Build outputs
+dist
+build
+.next
+coverage
+
+# Generated files
+**/generated
+**/*.d.ts
+
+# Prisma generated files
+packages/backend/src/generated/prisma
+**/prisma/migrations
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# IDE files
+.vscode
+.idea
+*.swp
+*.swo

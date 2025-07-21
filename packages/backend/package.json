@@ -9,11 +9,20 @@
     "./types": "./src/index.ts"
   },
   "scripts": {
-    "dev": "bun run --hot src/index.ts"
+    "dev": "bun run --hot src/index.ts",
+    "db:migrate": "prisma migrate dev",
+    "db:seed": "bunx prisma db seed",
+    "db:studio": "prisma studio",
+    "db:generate": "prisma generate",
+    "db:reset": "prisma migrate reset"
+  },
+  "prisma": {
+    "seed": "bun prisma/seed.ts"
   },
   "dependencies": {
     "hono": "^4.8.5",
     "@hono/zod-validator": "^0.3.0",
+    "@prisma/client": "^5.20.0",
     "shared": "workspace:*"
   },
   "devDependencies": {
