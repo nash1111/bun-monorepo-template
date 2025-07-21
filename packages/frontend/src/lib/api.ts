@@ -1,12 +1,12 @@
-import { hc } from 'hono/client'
-import type { 
-  GetAllPostsRoute, 
-  GetPostRoute, 
-  CreatePostRoute, 
-  UpdatePostRoute, 
-  DeletePostRoute 
+import type {
+  CreatePostRoute,
+  DeletePostRoute,
+  GetAllPostsRoute,
+  GetPostRoute,
+  UpdatePostRoute,
 } from 'backend'
-import type { Post, CreatePost, UpdatePost } from 'shared'
+import { hc } from 'hono/client'
+import type { CreatePost, Post, UpdatePost } from 'shared'
 
 // Create individual Hono RPC clients for each route
 const getAllPostsClient = hc<GetAllPostsRoute>('http://localhost:3000')
@@ -27,7 +27,7 @@ interface ApiResponse<T = unknown> {
 export const blogApi = {
   // Get all posts
   getAllPosts: async (): Promise<Post[]> => {
-    const response = await getAllPostsClient['api']['posts'].$get()
+    const response = await getAllPostsClient.api.posts.$get()
     if (!response.ok) {
       throw new Error('Failed to fetch posts')
     }
@@ -40,8 +40,8 @@ export const blogApi = {
 
   // Get post by ID
   getPost: async (id: string): Promise<Post> => {
-    const response = await getPostClient['api']['posts'][':id'].$get({ 
-      param: { id } 
+    const response = await getPostClient.api.posts[':id'].$get({
+      param: { id },
     })
     if (!response.ok) {
       throw new Error('Failed to fetch post')
@@ -55,8 +55,8 @@ export const blogApi = {
 
   // Create new post
   createPost: async (postData: CreatePost): Promise<Post> => {
-    const response = await createPostClient['api']['posts'].$post({ 
-      json: postData 
+    const response = await createPostClient.api.posts.$post({
+      json: postData,
     })
     if (!response.ok) {
       throw new Error('Failed to create post')
@@ -70,9 +70,9 @@ export const blogApi = {
 
   // Update post
   updatePost: async (id: string, postData: UpdatePost): Promise<Post> => {
-    const response = await updatePostClient['api']['posts'][':id'].$put({ 
+    const response = await updatePostClient.api.posts[':id'].$put({
       param: { id },
-      json: postData 
+      json: postData,
     })
     if (!response.ok) {
       throw new Error('Failed to update post')
@@ -86,8 +86,8 @@ export const blogApi = {
 
   // Delete post
   deletePost: async (id: string): Promise<void> => {
-    const response = await deletePostClient['api']['posts'][':id'].$delete({ 
-      param: { id } 
+    const response = await deletePostClient.api.posts[':id'].$delete({
+      param: { id },
     })
     if (!response.ok) {
       throw new Error('Failed to delete post')
@@ -96,5 +96,5 @@ export const blogApi = {
     if (!result.success) {
       throw new Error(result.error || 'Failed to delete post')
     }
-  }
+  },
 }

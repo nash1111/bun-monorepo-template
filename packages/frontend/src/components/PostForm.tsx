@@ -1,12 +1,12 @@
-import { useState, useEffect } from 'react'
-import type { Post, CreatePost, UpdatePost } from 'shared'
+import { ArrowLeft, Save } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import type { CreatePost, Post, UpdatePost } from 'shared'
 import { CreatePostSchema, UpdatePostSchema } from 'shared'
-import { blogApi } from '@/lib/api'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { ArrowLeft, Save } from 'lucide-react'
+import { blogApi } from '@/lib/api'
 import { cn } from '@/lib/utils'
 
 interface PostFormProps {
@@ -41,7 +41,7 @@ export function PostForm({ post, onSave, onCancel }: PostFormProps) {
 
   const validateForm = (): boolean => {
     const newFieldErrors: { title?: string; content?: string } = {}
-    
+
     try {
       if (isEditing) {
         UpdatePostSchema.parse({ title: title || undefined, content: content || undefined })
@@ -66,7 +66,7 @@ export function PostForm({ post, onSave, onCancel }: PostFormProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    
+
     if (!validateForm()) {
       return
     }
@@ -81,7 +81,7 @@ export function PostForm({ post, onSave, onCancel }: PostFormProps) {
         const updateData: UpdatePost = {}
         if (title !== post.title) updateData.title = title
         if (content !== post.content) updateData.content = content
-        
+
         savedPost = await blogApi.updatePost(post.id, updateData)
       } else {
         const createData: CreatePost = { title, content }
@@ -103,16 +103,12 @@ export function PostForm({ post, onSave, onCancel }: PostFormProps) {
           <ArrowLeft className="w-4 h-4 mr-2" />
           Back
         </Button>
-        <h1 className="text-3xl font-bold">
-          {isEditing ? 'Edit Post' : 'Create New Post'}
-        </h1>
+        <h1 className="text-3xl font-bold">{isEditing ? 'Edit Post' : 'Create New Post'}</h1>
       </div>
 
       <Card>
         <CardHeader>
-          <CardTitle>
-            {isEditing ? 'Edit Your Post' : 'Write a New Post'}
-          </CardTitle>
+          <CardTitle>{isEditing ? 'Edit Your Post' : 'Write a New Post'}</CardTitle>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-6">
@@ -130,12 +126,10 @@ export function PostForm({ post, onSave, onCancel }: PostFormProps) {
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="Enter post title..."
-                className={cn(fieldErrors.title && "border-destructive")}
+                className={cn(fieldErrors.title && 'border-destructive')}
                 disabled={loading}
               />
-              {fieldErrors.title && (
-                <p className="text-sm text-destructive">{fieldErrors.title}</p>
-              )}
+              {fieldErrors.title && <p className="text-sm text-destructive">{fieldErrors.title}</p>}
             </div>
 
             <div className="space-y-2">
@@ -147,11 +141,11 @@ export function PostForm({ post, onSave, onCancel }: PostFormProps) {
                 placeholder="Write your post content..."
                 rows={12}
                 className={cn(
-                  "w-full rounded-md border border-input bg-background px-3 py-2 text-sm",
-                  "placeholder:text-muted-foreground focus-visible:outline-none",
-                  "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-                  "disabled:cursor-not-allowed disabled:opacity-50 resize-y",
-                  fieldErrors.content && "border-destructive"
+                  'w-full rounded-md border border-input bg-background px-3 py-2 text-sm',
+                  'placeholder:text-muted-foreground focus-visible:outline-none',
+                  'focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
+                  'disabled:cursor-not-allowed disabled:opacity-50 resize-y',
+                  fieldErrors.content && 'border-destructive',
                 )}
                 disabled={loading}
               />
@@ -161,23 +155,17 @@ export function PostForm({ post, onSave, onCancel }: PostFormProps) {
             </div>
 
             <div className="flex items-center gap-3">
-              <Button 
-                type="submit" 
-                disabled={loading}
-                className="flex items-center gap-2"
-              >
+              <Button type="submit" disabled={loading} className="flex items-center gap-2">
                 <Save className="w-4 h-4" />
-                {loading 
-                  ? (isEditing ? 'Updating...' : 'Creating...') 
-                  : (isEditing ? 'Update Post' : 'Create Post')
-                }
+                {loading
+                  ? isEditing
+                    ? 'Updating...'
+                    : 'Creating...'
+                  : isEditing
+                    ? 'Update Post'
+                    : 'Create Post'}
               </Button>
-              <Button 
-                type="button" 
-                variant="outline" 
-                onClick={onCancel}
-                disabled={loading}
-              >
+              <Button type="button" variant="outline" onClick={onCancel} disabled={loading}>
                 Cancel
               </Button>
             </div>

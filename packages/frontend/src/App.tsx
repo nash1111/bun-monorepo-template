@@ -1,38 +1,38 @@
-import { useState } from "react";
-import type { Post } from 'shared';
-import { PostList } from "./components/PostList";
-import { PostForm } from "./components/PostForm";
+import { useState } from 'react'
+import type { Post } from 'shared'
+import { PostForm } from './components/PostForm'
+import { PostList } from './components/PostList'
 
-type View = 'list' | 'create' | 'edit' | 'view';
+type View = 'list' | 'create' | 'edit' | 'view'
 
 export function App() {
-  const [currentView, setCurrentView] = useState<View>('list');
-  const [selectedPost, setSelectedPost] = useState<Post | null>(null);
+  const [currentView, setCurrentView] = useState<View>('list')
+  const [selectedPost, setSelectedPost] = useState<Post | null>(null)
 
   const handleCreatePost = () => {
-    setSelectedPost(null);
-    setCurrentView('create');
-  };
+    setSelectedPost(null)
+    setCurrentView('create')
+  }
 
   const handleEditPost = (post: Post) => {
-    setSelectedPost(post);
-    setCurrentView('edit');
-  };
+    setSelectedPost(post)
+    setCurrentView('edit')
+  }
 
   const handleViewPost = (post: Post) => {
-    setSelectedPost(post);
-    setCurrentView('view');
-  };
+    setSelectedPost(post)
+    setCurrentView('view')
+  }
 
-  const handleSavePost = (post: Post) => {
-    setCurrentView('list');
-    setSelectedPost(null);
-  };
+  const handleSavePost = (_post: Post) => {
+    setCurrentView('list')
+    setSelectedPost(null)
+  }
 
   const handleCancel = () => {
-    setCurrentView('list');
-    setSelectedPost(null);
-  };
+    setCurrentView('list')
+    setSelectedPost(null)
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -57,12 +57,14 @@ export function App() {
           <div className="space-y-6">
             <div className="flex items-center gap-4">
               <button
+                type="button"
                 onClick={handleCancel}
                 className="inline-flex items-center gap-2 px-3 py-2 text-sm bg-secondary text-secondary-foreground rounded-md hover:bg-secondary/80"
               >
                 ← Back to Posts
               </button>
               <button
+                type="button"
                 onClick={() => handleEditPost(selectedPost)}
                 className="inline-flex items-center gap-2 px-3 py-2 text-sm bg-primary text-primary-foreground rounded-md hover:bg-primary/90"
               >
@@ -73,7 +75,7 @@ export function App() {
             <article className="prose prose-slate max-w-none">
               <h1 className="text-4xl font-bold mb-4">{selectedPost.title}</h1>
               <div className="text-muted-foreground text-sm mb-6">
-                Published on {new Date(selectedPost.createdAt).toLocaleDateString()} 
+                Published on {new Date(selectedPost.createdAt).toLocaleDateString()}
                 {selectedPost.updatedAt !== selectedPost.createdAt && (
                   <span> · Updated {new Date(selectedPost.updatedAt).toLocaleDateString()}</span>
                 )}
@@ -86,7 +88,7 @@ export function App() {
         )}
       </div>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App

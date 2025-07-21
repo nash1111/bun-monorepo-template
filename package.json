@@ -1,6 +1,5 @@
 {
   "name": "bun-monorepo-template",
-  "module": "index.ts",
   "type": "module",
   "private": true,
   "workspaces": [
@@ -10,9 +9,16 @@
     "dev": "concurrently \"bun run backend:dev\" \"bun run frontend:dev\"",
     "backend:dev": "bun --filter=backend run dev",
     "frontend:dev": "bun --filter=frontend run dev",
-    "install:all": "bun install"
+    "install:all": "bun install",
+    "format": "biome format --write .",
+    "format:check": "biome format .",
+    "lint": "biome lint .",
+    "lint:fix": "biome lint --write .",
+    "check": "biome check .",
+    "check:fix": "biome check --write ."
   },
   "devDependencies": {
+    "@biomejs/biome": "^2.1.2",
     "@types/bun": "latest",
     "concurrently": "^8.2.2"
   },
